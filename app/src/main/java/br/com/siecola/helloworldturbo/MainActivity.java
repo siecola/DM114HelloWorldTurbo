@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import br.com.siecola.helloworldturbo.fragments.ListaPedidosFragment;
+import br.com.siecola.helloworldturbo.fragments.SettingsFragment;
 import br.com.siecola.helloworldturbo.fragments.Tela1Fragment;
 
 public class MainActivity extends AppCompatActivity
@@ -77,6 +78,10 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case R.id.nav_lista_pedidos:
                     fragmentClass = ListaPedidosFragment.class;
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    break;
+                case R.id.nav_settings:
+                    fragmentClass = SettingsFragment.class;
                     fragment = (Fragment) fragmentClass.newInstance();
                     break;
                 default:
