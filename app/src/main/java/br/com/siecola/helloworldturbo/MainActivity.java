@@ -3,6 +3,7 @@ package br.com.siecola.helloworldturbo;
 import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,15 +16,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import br.com.siecola.helloworldturbo.fragments.GCMFragment;
 import br.com.siecola.helloworldturbo.fragments.OrdersFragment;
 import br.com.siecola.helloworldturbo.fragments.SettingsFragment;
 import br.com.siecola.helloworldturbo.fragments.Tela1Fragment;
+import br.com.siecola.helloworldturbo.models.ProductInfo;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 //    private static final int PERMISSION_REQUEST_INTERNET = 10;
 //    private static final int PERMISSION_REQUEST_NETWORK_STATE = 11;
+
+    private ProductInfo productInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (savedInstanceState == null) {
+        Intent intent = this.getIntent();
+        if (intent.hasExtra("productInfo")) {
+            productInfo = (ProductInfo) intent.
+                    getSerializableExtra("productInfo");
+            if (productInfo != null) {
+                displayFragment(R.id.nav_gcm);
+            }
+        } else if (savedInstanceState == null) {
             displayFragment(R.id.nav_tela1);
         }
 
@@ -62,6 +74,18 @@ public class MainActivity extends AppCompatActivity
 //                    new String[]{Manifest.permission.ACCESS_NETWORK_STATE},
 //                    PERMISSION_REQUEST_NETWORK_STATE);
 //        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (intent.hasExtra("productInfo")) {
+            productInfo = (ProductInfo) intent.
+                    getSerializableExtra("productInfo");
+            if (productInfo != null) {
+                displayFragment(R.id.nav_gcm);
+            }
+        }
+        super.onNewIntent(intent);
     }
 
     @Override
@@ -100,6 +124,16 @@ public class MainActivity extends AppCompatActivity
                 case R.id.nav_lista_pedidos:
                     fragmentClass = OrdersFragment.class;
                     fragment = (Fragment) fragmentClass.newInstance();
+                    break;
+                case R.id.nav_gcm:
+                    fragmentClass = GCMFragment.class;
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    if (productInfo != null) {
+                        Bundle args = new Bundle();
+                        args.putSerializable("productInfo", productInfo);
+                        fragment.setArguments(args);
+                        productInfo = null;
+                    }
                     break;
                 case R.id.nav_settings:
                     fragmentClass = SettingsFragment.class;

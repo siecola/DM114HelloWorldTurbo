@@ -12,6 +12,11 @@
             android:title="Pedidos"/>
 
         <item
+            android:id="@+id/nav_gcm"
+            android:icon="@drawable/ic_message_black_24dp"
+            android:title="GCM"/>
+
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_manage"
             android:title="Configurações"/>
