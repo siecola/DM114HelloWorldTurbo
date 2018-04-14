@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 import br.com.siecola.helloworldturbo.R;
